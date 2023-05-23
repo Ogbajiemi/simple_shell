@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * getline - To read the entire line of an input
+ * getline - A function that reads the entire line of an input
  * @argc: argument count
  * @argv: argument vector
  *
@@ -36,7 +36,7 @@ int main()
 			exit(0);
 		}
 
-		/* to remove newlines that are trailing */
+		/* to remove trailing newlines */
 		if (lineptr[numvalue - 1] == '\n')
 		{
 			lineptr[numvalue - 1] = '\0';
@@ -70,7 +70,7 @@ int main()
 		
 		args[count] = NULL;
 
-		/* To Check wether of not command exists in PATH */
+		/* To Check if the command exists in PATH */
 		path = getenv("PATH");
 		path_token = strtok(path, ":");
 		while (path_token != NULL)
