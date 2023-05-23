@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * main - command line interpreter
+ * main -nterpretes command line 
  * @argc: argument count
  * @argv: argument vector
  *
@@ -29,7 +29,7 @@ int main()
 			exit(0);
 		}
 
-		/* to remove newlines that are trailing */
+		/* to remove trailing new lines */
 		if (lineptr[numvalue - 1] == '\n')
 		{
 			lineptr[numvalue - 1] = '\0';
