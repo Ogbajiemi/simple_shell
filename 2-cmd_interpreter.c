@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * strtok - A function that split a string
+ * strtok - A function that splits a string
  * @argc: argument count
  * @argv: argument vector
  *
@@ -31,7 +31,7 @@ int main()
 			exit(0);
 		}
 
-		/* to remove newlines that are trailing */
+		/* to remove trailing newlines */
 		if (lineptr[numvalue - 1] == '\n')
 		{
 			lineptr[numvalue - 1] = '\0';
