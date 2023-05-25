@@ -1,111 +1,76 @@
 #include "shell.h"
 
 /**
- * strcmp - To compare two strings lexicographically
- * @argc: argument count
- * @argv: argument vector
+ * _strlen - Calculates length of a str.
+ * @str: str whose length is to be calculated.
  *
- * Return: -1
+ * Return: length of str.
+ */
+size_t _strlen(const char *str)
+{
+	size_t len = 0;
+
+	while (*str)
+	{
+		len++;
+		str++;
+	}
+
+	return (len);
+}
+
+/**
+ * _strcat - concatenates a str to the end of other str.
+ * @dest: destination str.
+ * @src: source str to be appended.
+ *
+ * Return: pointer to the destination str.
+ */
+char *_strcat(char *dest, const char *src)
+{
+	char *ptr = dest;
+
+	while (*dest)
+		dest++;
+
+	while (*src)
+	{
+		*dest = *src;
+		dest++;
+		src++;
+	}
+	*dest = '\0';
+
+	return (ptr);
+}
+
+/**
+ * _strncmp - Compares strings up to a specific no of chars.
+ * @str1: first str to compare.
+ * @str2: second str to compare.
+ * @n: maximum number of chars to compare.
+ *
+ * Return: 0 if the strings are equal up to a specific no of chars,
+ *         negative value if str1 < str2, or positive value if str1 > str2.
  */
 
-int main()
+int _strncmp(const char *str1, const char *str2, size_t n)
 {
-	pid_t pid;
-	char *tok;
-	char *args[MAX_ARGS];
-	char *lineptr = NULL;
-	size_t n = 0;
-	char *path;
-	char *path_token;
-	int command_exists = 0;
-	char command_path[256];
-	ssize_t numvalue;
-	int count = 0;
-	char *error_message;
+	size_t i = 0;
 
-	while (1)
+	while (i < n && str1[i] && str2[i] && str1[i] == str2[i])
 	{
-		write(STDOUT_FILENO, "Ogbaji&Pearlie$ ", 16);
-
-		numvalue = getline(&lineptr, &n, stdin);
-		if (numvalue == -1)
-		{
-			write(STDOUT_FILENO, "\n", 1);
-			free(lineptr);
-			exit(0);
-		}
-
-		/* to remove newlines that are trailing */
-		if (lineptr[numvalue - 1] == '\n')
-		{
-			lineptr[numvalue - 1] = '\0';
-		}
-
-		if (strcmp(lineptr, "exit") == 0)
-		{
-			free(lineptr);
-			exit(0);
-		}
-
-		/* Tokenization of command line */
-		tok = strtok(lineptr, " ");
-		while (tok != NULL && count < MAX_ARGS - 1)
-		{
-			args[count] = tok;
-			count++;
-			tok = strtok(NULL, " ");
-		}
-		
-		args[count] = NULL;
-
-		/* To Check wether of not command exists in PATH */
-		path = getenv("PATH");
-		path_token = strtok(path, ":");
-		while (path_token != NULL)
-		{
-			snprintf(command_path, sizeof(command_path), "%s/%s", path_token, args[0]);
-			if (access(command_path, X_OK) == 0)
-			{
-				/* Command exists */
-				command_exists = 1;
-				args[0] = command_path;
-				break;
-			}
-			path_token = strtok(NULL, ":");
-		}
-		
-		if (!command_exists)
-		{
-			error_message = "Command not found: ";
-			write(STDERR_FILENO, error_message, strlen(error_message));
-			write(STDERR_FILENO, args[0], strlen(args[0]));
-			write(STDERR_FILENO, "\n", 1);
-			continue;
-		}
-
-		pid = fork();
-		if (pid < 0)
-		{
-			perror("failed");
-			free(lineptr);
-			exit(1);
-	
-		}
-		else if (pid == 0)
-		{
-			/* child parent */
-			execve(args[0], args, NULL);
-			perror("execvp failed");
-			free(lineptr);
-			exit(1);
-		}
-		else
-		{
-			/* parent
-			 * waiting for the child process to be completed */
-			wait(NULL);
-		}
-	
+		i++;
 	}
-	return 0;
+
+	if (i == n)
+	{
+		return (0);
+	}
+	else
+	{
+		return (str1[i] - str2[i]);
+	}
 }
+
+

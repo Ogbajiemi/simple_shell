@@ -1,64 +1,65 @@
 #include "shell.h"
 
 /**
- * main -nterpretes command line 
- * @argc: argument count
- * @argv: argument vector
- *
- * Return: -1
+ * print - print the prompt
+ * @av: command-line arguments
+ * @env: environment variables
  */
-int main()
+
+void print(char **av, char **env)
 {
-	char *args[256];
-	char *lineptr = NULL;
-	size_t n = 0;
-	ssize_t numvalue;
-	char *errmsg;
-	pid_t pid;
-	args[0] = lineptr;
-	args[1] = NULL;
-	
+	char *line_ptr = NULL, *tok;
+	size_t k = 0;
+	ssize_t char_count;
+	char *argv[MAX_COMMAND];
+	int path_index = 0, argc;
+	char *path_parts[MAX_COMMAND];
+	(void) av;
+
+	_path(&path_index, path_parts);
+
 	while (1)
 	{
-		write(STDOUT_FILENO, "Ogbaji&Pearlie$ ", 16);		
-		numvalue = getline(&lineptr, &n, stdin);
-		if (numvalue == -1)
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, "Shell$ ", 7);
+		fflush(stdout);
+		char_count = getline(&line_ptr, &k, stdin);
+		if (char_count == EOF)
 		{
-			write(STDOUT_FILENO, "\n", 1);
-			free(lineptr);
-			exit(0);
+			free(line_ptr);
+			break;
 		}
+		line_ptr[_strcspn(line_ptr, "\n")] = '\0';
 
-		/* to remove trailing new lines */
-		if (lineptr[numvalue - 1] == '\n')
+		argc = 0;
+		tok = strtok(line_ptr, " ");
+		while (tok != NULL && argc < MAX_COMMAND - 1)
 		{
-			lineptr[numvalue - 1] = '\0';
+			argv[argc++] = tok;
+			tok = strtok(NULL, " ");
 		}
-		
-		pid = fork();
-		if (pid < 0)
-		{
-			perror("failed");
-			free(lineptr);
-			exit(1);
-		}
-		else if (pid == 0)
-		{
-			/* child */
-			execve(lineptr, args, NULL);
-			errmsg = "No such file of directory ";
-			write(STDERR_FILENO, errmsg, strlen(errmsg));
-			write(STDERR_FILENO, lineptr, strlen(lineptr));
-			write(STDERR_FILENO, "\n", 1);
-			free(lineptr);
-			exit(1);
-		}
-		else
-		{
-			/* parent
-			 * waiting for the child process to be completed */
-			wait(NULL);
-		}
+		argv[argc] = NULL;
+		if (argc > 0)
+		handle_cmd(argv, env, path_parts, path_index);
 	}
-	return (0);
+}
+
+/**
+ * init_path - Initializes/populates the array of PATH dirs by extracting the
+ *             the dirs from "PATH" ENVIRON VAR
+ * @path_index: Pointer to the variable storing the number of PATH directories
+ * @path_parts: Array to store the PATH directories
+ *
+ */
+
+void _path(int *path_index, char *path_parts[])
+{
+	char *path = _getenv("PATH");
+	char *part = strtok(path, ":");
+
+	while (part != NULL && *path_index < MAX_COMMAND)
+	{
+		path_parts[(*path_index)++] = part;
+		part = strtok(NULL, ":");
+	}
 }
