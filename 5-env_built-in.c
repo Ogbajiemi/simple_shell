@@ -1,7 +1,8 @@
 #include "shell.h"
-
+#include <stdio.h>
  /**
- * main - entry point of the program
+ * @main:  entry point of the program
+ * main - the entry point
  * @ac: No of cmd-line arguments
  * @av: Array of cmd-line arguments
  * @env: Array of environ variables
