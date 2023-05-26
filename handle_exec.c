@@ -59,7 +59,7 @@ void handle_cmd(char **argv, char **env, char **path_parts, int path_index)
 
 		if (cmd_path == NULL)
 		{
-			size_t err_msg_len = _strlen(argv[0]) + _strlen(": No such file or directory") + 1;
+			size_t err_msg_len = _strlen(argv[0]) + _strlen(": No such file") + 1;
 
 			err_msg = malloc(err_msg_len);
 			if (err_msg == NULL)
