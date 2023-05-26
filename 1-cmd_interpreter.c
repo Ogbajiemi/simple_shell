@@ -45,7 +45,8 @@ void print(char **av, char **env)
 }
 
 /**
- * init_path - Initializes/populates the array of PATH dirs by extracting the
+ * _path - .....
+ * init_path - Initializes and populates the array of PATH dirs by extracting
  *             the dirs from "PATH" ENVIRON VAR
  * @path_index: Pointer to the variable storing the number of PATH directories
  * @path_parts: Array to store the PATH directories
