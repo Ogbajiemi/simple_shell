@@ -1,6 +1,6 @@
 #include "shell.h"
 
-/**
+ /**
  * main - entry point to program
  * @ac: No of cmd-line arguments
  * @av: Array of cmd-line arguments
@@ -10,7 +10,7 @@
  */
 int main(int ac, char **av, char **env)
 {
-	if (ac == 1)
-		print(av, env);
-	return (0);
-}
+        if (ac == 1)
+                print(av, env);
+        return (0);
+ }
