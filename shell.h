@@ -31,13 +31,6 @@ void print_envi(char **env);
 char *pathfinder(char *command, char **path_parts, int path_index);
 void exec_cmd(char *cmd_path, char **argv, char **env);
 void _path(int *path_index, char *path_parts[]);
-char *_getenv(const char *name, char **_environ);
-int _env(data_shell *datash);
-char *copy_info(char *name, char *value);
-void set_env(char *name, char *value, data_shell *datash);
-int _setenv(data_shell *datash);
-int _unsetenv(data_shell *datash);
-
 
 
 
